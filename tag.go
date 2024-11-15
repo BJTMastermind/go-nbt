@@ -1189,7 +1189,14 @@ func (t *ByteArray) Read(n *Stream) error {
 
 // Write writes tag for Stream
 func (t *ByteArray) Write(n *Stream) error {
-    return n.Stream.Put(t.Value)
+    err := n.Stream.PutInt(int32(len(t.Value)))
+    if err != nil {
+        return err
+    }
+
+    err = n.Stream.Put(t.Value)
+
+    return err
 }
 
 // ToBool returns value as bool
@@ -2164,7 +2171,7 @@ func (t *LongArray) Read(n *Stream) (err error) {
 
 // Write writes tag for Stream
 func (t *LongArray) Write(n *Stream) error {
-    err := n.Stream.PutLong(int64(len(t.Value)))
+    err := n.Stream.PutInt(int32(len(t.Value)))
     if err != nil {
         return err
     }
