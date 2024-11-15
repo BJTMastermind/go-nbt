@@ -78,13 +78,13 @@ var (
 
 // NewStream returns new Stream
 func NewStream(order binary.Order) *Stream {
-    return NewStreamBytes(order, []byte{})
+    return NewStreamBytes(order, []int8{})
 }
 
 // NewStreamBytes returns new Stream with bytes data
-func NewStreamBytes(order binary.Order, b []byte) *Stream {
+func NewStreamBytes(order binary.Order, b []int8) *Stream {
     return &Stream{
-        Stream: binary.NewOrderStreamBytes(order, b),
+        Stream: binary.NewOrderStreamBytes(order, int8Array2ByteArray(b)),
     }
 }
 
@@ -109,7 +109,7 @@ func (s *Stream) ReadTag() (Tag, error) {
         return fmt.Errorf("nbt: happened errors while it's parsing near %d Error: %s", s.Stream.Off(), err.Error())
     }
 
-    id, err := s.Stream.Byte()
+    id, err := s.Stream.SByte()
     if err != nil {
         return nil, errHandle(err)
     }
@@ -140,7 +140,7 @@ func (s *Stream) ReadTag() (Tag, error) {
 
 // WriteTag writes tag to buffer
 func (s *Stream) WriteTag(tag Tag) error {
-    err := s.Stream.PutByte(tag.ID())
+    err := s.Stream.PutSByte(tag.ID())
     if err != nil {
         return err
     }

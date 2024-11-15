@@ -114,7 +114,7 @@ func FromBytes(b []byte, order binary.Order) (*Stream, error) {
         }
     }
 
-    return NewStreamBytes(order, b), nil
+    return NewStreamBytes(order, byteArray2Int8Array(b)), nil
 }
 
 // Compress compresses stream's bytes

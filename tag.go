@@ -17,7 +17,7 @@ import (
     "github.com/beito123/binary"
 )
 
-func getTagByID(id byte) Tag {
+func getTagByID(id int8) Tag {
     switch id {
     case IDTagEnd:
         return new(End)
@@ -51,7 +51,7 @@ func getTagByID(id byte) Tag {
 }
 
 // GetTagName returns tag name
-func GetTagName(id byte) string {
+func GetTagName(id int8) string {
     switch id {
     case IDTagEnd:
         return "End"
@@ -87,7 +87,7 @@ func GetTagName(id byte) string {
 // Tag is a nbt tag interface
 type Tag interface {
     // ID returns tag id
-    ID() byte
+    ID() int8
 
     // Name returns tag's name
     Name() string
@@ -104,8 +104,8 @@ type Tag interface {
     // ToBool returns value as bool
     ToBool() (bool, error)
 
-    // ToByte returns value as byte
-    ToByte() (byte, error)
+    // ToByte returns value as int8
+    ToByte() (int8, error)
 
     // ToRune returns value as rune
     ToRune() (rune, error)
@@ -146,8 +146,8 @@ type Tag interface {
     // ToFloat64 returns value as float64
     ToFloat64() (float64, error)
 
-    // ToByteArray returns value as []byte
-    ToByteArray() ([]byte, error)
+    // ToByteArray returns value as []int8
+    ToByteArray() ([]int8, error)
 
     // ToString returns value as string
     ToString() (string, error)
@@ -215,7 +215,7 @@ func NewDoubleTag(name string, val float64) *Double {
 }
 
 // NewByteArrayTag returns a new ByteArray tag
-func NewByteArrayTag(name string, val []byte) *ByteArray {
+func NewByteArrayTag(name string, val []int8) *ByteArray {
     return &ByteArray{
         name:  name,
         Value: val,
@@ -231,7 +231,7 @@ func NewStringTag(name string, val string) *String {
 }
 
 // NewListTag returns a new List tag
-func NewListTag(name string, val []Tag, typ byte) *List {
+func NewListTag(name string, val []Tag, typ int8) *List {
     return &List{
         name:     name,
         Value:    val,
@@ -270,7 +270,7 @@ type End struct {
 }
 
 // ID returns tag id
-func (t *End) ID() byte {
+func (t *End) ID() int8 {
     return IDTagEnd
 }
 
@@ -299,8 +299,8 @@ func (t *End) ToBool() (bool, error) {
     return false, nil
 }
 
-// ToByte returns value as byte
-func (t *End) ToByte() (byte, error) {
+// ToByte returns value as int8
+func (t *End) ToByte() (int8, error) {
     return 0, nil
 }
 
@@ -369,9 +369,9 @@ func (t *End) ToFloat64() (float64, error) {
     return 0, nil
 }
 
-// ToByteArray returns value as []byte
-func (t *End) ToByteArray() ([]byte, error) {
-    return []byte{}, nil
+// ToByteArray returns value as []int8
+func (t *End) ToByteArray() ([]int8, error) {
+    return []int8{}, nil
 }
 
 // ToString returns value as string
@@ -389,14 +389,14 @@ func (t *End) ToLongArray() ([]int64, error) {
     return []int64{}, nil
 }
 
-// Byte is a tag for a byte
+// Byte is a tag for a int8
 type Byte struct {
     name  string
     Value int8
 }
 
 // ID returns tag id
-func (t *Byte) ID() byte {
+func (t *Byte) ID() int8 {
     return IDTagByte
 }
 
@@ -427,9 +427,9 @@ func (t *Byte) ToBool() (bool, error) {
     return t.Value != 0, nil
 }
 
-// ToByte returns value as byte
-func (t *Byte) ToByte() (byte, error) {
-    return byte(t.Value), nil
+// ToByte returns value as int8
+func (t *Byte) ToByte() (int8, error) {
+    return t.Value, nil
 }
 
 // ToRune returns value as rune
@@ -497,9 +497,9 @@ func (t *Byte) ToFloat64() (float64, error) {
     return float64(t.Value), nil
 }
 
-// ToByteArray returns value as []byte
-func (t *Byte) ToByteArray() ([]byte, error) {
-    return []byte{byte(t.Value)}, nil
+// ToByteArray returns value as []int8
+func (t *Byte) ToByteArray() ([]int8, error) {
+    return []int8{t.Value}, nil
 }
 
 // ToString returns value as string
@@ -524,7 +524,7 @@ type Short struct {
 }
 
 // ID returns tag id
-func (t *Short) ID() byte {
+func (t *Short) ID() int8 {
     return IDTagShort
 }
 
@@ -555,9 +555,9 @@ func (t *Short) ToBool() (bool, error) {
     return t.Value != 0, nil
 }
 
-// ToByte returns value as byte
-func (t *Short) ToByte() (byte, error) {
-    return byte(t.Value), nil
+// ToByte returns value as int8
+func (t *Short) ToByte() (int8, error) {
+    return int8(t.Value), nil
 }
 
 // ToRune returns value as rune
@@ -625,9 +625,9 @@ func (t *Short) ToFloat64() (float64, error) {
     return float64(t.Value), nil
 }
 
-// ToByteArray returns value as []byte
-func (t *Short) ToByteArray() ([]byte, error) {
-    return binary.WriteShort(t.Value), nil
+// ToByteArray returns value as []int8
+func (t *Short) ToByteArray() ([]int8, error) {
+    return byteArray2Int8Array(binary.WriteShort(t.Value)), nil
 }
 
 // ToString returns value as string
@@ -652,7 +652,7 @@ type Int struct {
 }
 
 // ID returns tag id
-func (t *Int) ID() byte {
+func (t *Int) ID() int8 {
     return IDTagInt
 }
 
@@ -683,9 +683,9 @@ func (t *Int) ToBool() (bool, error) {
     return t.Value != 0, nil
 }
 
-// ToByte returns value as byte
-func (t *Int) ToByte() (byte, error) {
-    return byte(t.Value), nil
+// ToByte returns value as int8
+func (t *Int) ToByte() (int8, error) {
+    return int8(t.Value), nil
 }
 
 // ToRune returns value as rune
@@ -753,9 +753,9 @@ func (t *Int) ToFloat64() (float64, error) {
     return float64(t.Value), nil
 }
 
-// ToByteArray returns value as []byte
-func (t *Int) ToByteArray() ([]byte, error) {
-    return binary.WriteInt(t.Value), nil
+// ToByteArray returns value as []int8
+func (t *Int) ToByteArray() ([]int8, error) {
+    return byteArray2Int8Array(binary.WriteInt(t.Value)), nil
 }
 
 // ToString returns value as string
@@ -780,7 +780,7 @@ type Long struct {
 }
 
 // ID returns tag id
-func (t *Long) ID() byte {
+func (t *Long) ID() int8 {
     return IDTagLong
 }
 
@@ -811,9 +811,9 @@ func (t *Long) ToBool() (bool, error) {
     return t.Value != 0, nil
 }
 
-// ToByte returns value as byte
-func (t *Long) ToByte() (byte, error) {
-    return byte(t.Value), nil
+// ToByte returns value as int8
+func (t *Long) ToByte() (int8, error) {
+    return int8(t.Value), nil
 }
 
 // ToRune returns value as rune
@@ -881,9 +881,9 @@ func (t *Long) ToFloat64() (float64, error) {
     return float64(t.Value), nil
 }
 
-// ToByteArray returns value as []byte
-func (t *Long) ToByteArray() ([]byte, error) {
-    return binary.WriteLong(t.Value), nil
+// ToByteArray returns value as []int8
+func (t *Long) ToByteArray() ([]int8, error) {
+    return byteArray2Int8Array(binary.WriteLong(t.Value)), nil
 }
 
 // ToString returns value as string
@@ -908,7 +908,7 @@ type Float struct {
 }
 
 // ID returns tag id
-func (t *Float) ID() byte {
+func (t *Float) ID() int8 {
     return IDTagFloat
 }
 
@@ -939,9 +939,9 @@ func (t *Float) ToBool() (bool, error) {
     return t.Value != 0, nil
 }
 
-// ToByte returns value as byte
-func (t *Float) ToByte() (byte, error) {
-    return byte(t.Value), nil
+// ToByte returns value as int8
+func (t *Float) ToByte() (int8, error) {
+    return int8(t.Value), nil
 }
 
 // ToRune returns value as rune
@@ -1009,9 +1009,9 @@ func (t *Float) ToFloat64() (float64, error) {
     return float64(t.Value), nil
 }
 
-// ToByteArray returns value as []byte
-func (t *Float) ToByteArray() ([]byte, error) {
-    return binary.WriteFloat(t.Value), nil
+// ToByteArray returns value as []int8
+func (t *Float) ToByteArray() ([]int8, error) {
+    return byteArray2Int8Array(binary.WriteFloat(t.Value)), nil
 }
 
 // ToString returns value as string
@@ -1036,7 +1036,7 @@ type Double struct {
 }
 
 // ID returns tag id
-func (t *Double) ID() byte {
+func (t *Double) ID() int8 {
     return IDTagDouble
 }
 
@@ -1067,9 +1067,9 @@ func (t *Double) ToBool() (bool, error) {
     return t.Value != 0, nil
 }
 
-// ToByte returns value as byte
-func (t *Double) ToByte() (byte, error) {
-    return byte(t.Value), nil
+// ToByte returns value as int8
+func (t *Double) ToByte() (int8, error) {
+    return int8(t.Value), nil
 }
 
 // ToRune returns value as rune
@@ -1137,9 +1137,9 @@ func (t *Double) ToFloat64() (float64, error) {
     return t.Value, nil
 }
 
-// ToByteArray returns value as []byte
-func (t *Double) ToByteArray() ([]byte, error) {
-    return binary.WriteDouble(t.Value), nil
+// ToByteArray returns value as []int8
+func (t *Double) ToByteArray() ([]int8, error) {
+    return byteArray2Int8Array(binary.WriteDouble(t.Value)), nil
 }
 
 // ToString returns value as string
@@ -1157,14 +1157,14 @@ func (t *Double) ToLongArray() ([]int64, error) {
     return nil, errors.New("couldn't cast to []int64")
 }
 
-// ByteArray is a tag for []byte
+// ByteArray is a tag for []int8
 type ByteArray struct {
     name  string
-    Value []byte
+    Value []int8
 }
 
 // ID returns tag id
-func (t *ByteArray) ID() byte {
+func (t *ByteArray) ID() int8 {
     return IDTagByteArray
 }
 
@@ -1182,7 +1182,7 @@ func (t *ByteArray) SetName(name string) {
 func (t *ByteArray) Read(n *Stream) error {
     ln, err := n.Stream.Int()
 
-    t.Value = n.Stream.Get(int(ln))
+    t.Value = byteArray2Int8Array(n.Stream.Get(int(ln)))
 
     return err
 }
@@ -1194,7 +1194,7 @@ func (t *ByteArray) Write(n *Stream) error {
         return err
     }
 
-    err = n.Stream.Put(t.Value)
+    err = n.Stream.Put(int8Array2ByteArray(t.Value))
 
     return err
 }
@@ -1204,9 +1204,9 @@ func (t *ByteArray) ToBool() (bool, error) {
     return len(t.Value) > 0, nil
 }
 
-// ToByte returns value as byte
-func (t *ByteArray) ToByte() (byte, error) {
-    return 0, errors.New("couldn't cast to byte")
+// ToByte returns value as int8
+func (t *ByteArray) ToByte() (int8, error) {
+    return 0, errors.New("couldn't cast to int8")
 }
 
 // ToRune returns value as rune
@@ -1274,8 +1274,8 @@ func (t *ByteArray) ToFloat64() (float64, error) {
     return 0, errors.New("couldn't cast to float64")
 }
 
-// ToByteArray returns value as []byte
-func (t *ByteArray) ToByteArray() ([]byte, error) {
+// ToByteArray returns value as []int8
+func (t *ByteArray) ToByteArray() ([]int8, error) {
     return t.Value, nil
 }
 
@@ -1309,7 +1309,7 @@ type String struct {
 }
 
 // ID returns tag id
-func (t *String) ID() byte {
+func (t *String) ID() int8 {
     return IDTagString
 }
 
@@ -1340,10 +1340,10 @@ func (t *String) ToBool() (bool, error) {
     return len(t.Value) > 0, nil
 }
 
-// ToByte returns value as byte
-func (t *String) ToByte() (byte, error) {
+// ToByte returns value as int8
+func (t *String) ToByte() (int8, error) {
     v, err := strconv.Atoi(t.Value)
-    return byte(v), err
+    return int8(v), err
 }
 
 // ToRune returns value as rune
@@ -1423,9 +1423,9 @@ func (t *String) ToFloat64() (float64, error) {
     return strconv.ParseFloat(t.Value, 64)
 }
 
-// ToByteArray returns value as []byte
-func (t *String) ToByteArray() ([]byte, error) {
-    return []byte(t.Value), nil
+// ToByteArray returns value as []int8
+func (t *String) ToByteArray() ([]int8, error) {
+    return byteArray2Int8Array([]byte(t.Value)), nil
 }
 
 // ToString returns value as string
@@ -1448,11 +1448,11 @@ type List struct {
     name  string
     Value []Tag
 
-    ListType byte
+    ListType int8
 }
 
 // ID returns tag id
-func (t *List) ID() byte {
+func (t *List) ID() int8 {
     return IDTagList
 }
 
@@ -1468,7 +1468,7 @@ func (t *List) SetName(name string) {
 
 // Read reads tag from Stream
 func (t *List) Read(n *Stream) (err error) {
-    t.ListType, err = n.Stream.Byte()
+    t.ListType, err = n.Stream.SByte()
     if err != nil {
         return err
     }
@@ -1499,7 +1499,7 @@ func (t *List) Read(n *Stream) (err error) {
 
 // Write writes tag for Stream
 func (t *List) Write(n *Stream) error {
-    err := n.Stream.PutByte(t.ListType)
+    err := n.Stream.PutSByte(t.ListType)
     if err != nil {
         return err
     }
@@ -1528,9 +1528,9 @@ func (t *List) ToBool() (bool, error) {
     return len(t.Value) > 0, nil
 }
 
-// ToByte returns value as byte
-func (t *List) ToByte() (byte, error) {
-    return 0, errors.New("couldn't cast to byte")
+// ToByte returns value as int8
+func (t *List) ToByte() (int8, error) {
+    return 0, errors.New("couldn't cast to int8")
 }
 
 // ToRune returns value as rune
@@ -1598,9 +1598,9 @@ func (t *List) ToFloat64() (float64, error) {
     return 0, errors.New("couldn't cast to float64")
 }
 
-// ToByteArray returns value as []byte
-func (t *List) ToByteArray() ([]byte, error) {
-    return nil, errors.New("couldn't cast to []byte")
+// ToByteArray returns value as []int8
+func (t *List) ToByteArray() ([]int8, error) {
+    return nil, errors.New("couldn't cast to []int8")
 }
 
 // ToString returns value as string
@@ -1640,7 +1640,7 @@ type Compound struct {
 }
 
 // ID returns tag id
-func (t *Compound) ID() byte {
+func (t *Compound) ID() int8 {
     return IDTagCompound
 }
 
@@ -1684,7 +1684,7 @@ func (t *Compound) Write(n *Stream) error {
         }
     }
 
-    return n.Stream.PutByte(byte(IDTagEnd))
+    return n.Stream.PutSByte(IDTagEnd)
 }
 
 // ToBool returns value as bool
@@ -1692,9 +1692,9 @@ func (t *Compound) ToBool() (bool, error) {
     return len(t.Value) > 0, nil
 }
 
-// ToByte returns value as byte
-func (t *Compound) ToByte() (byte, error) {
-    return 0, errors.New("couldn't cast to byte")
+// ToByte returns value as int8
+func (t *Compound) ToByte() (int8, error) {
+    return 0, errors.New("couldn't cast to int8")
 }
 
 // ToRune returns value as rune
@@ -1762,9 +1762,9 @@ func (t *Compound) ToFloat64() (float64, error) {
     return 0, errors.New("couldn't cast to float64")
 }
 
-// ToByteArray returns value as []byte
-func (t *Compound) ToByteArray() ([]byte, error) {
-    return nil, errors.New("couldn't cast to []byte")
+// ToByteArray returns value as []int8
+func (t *Compound) ToByteArray() ([]int8, error) {
+    return nil, errors.New("couldn't cast to []int8")
 }
 
 // ToString returns value as string
@@ -1828,8 +1828,8 @@ func (t *Compound) GetBool(name string) (bool, error) {
     return tag.ToBool()
 }
 
-// GetByte gets a tag with name as byte
-func (t *Compound) GetByte(name string) (byte, error) {
+// GetByte gets a tag with name as int8
+func (t *Compound) GetByte(name string) (int8, error) {
     tag, ok := t.Get(name)
     if !ok {
         return 0, errors.New("couldn't find tag " + name)
@@ -1888,8 +1888,8 @@ func (t *Compound) GetDouble(name string) (float64, error) {
     return tag.ToFloat64()
 }
 
-// GetByteArray gets a tag with name as []byte
-func (t *Compound) GetByteArray(name string) ([]byte, error) {
+// GetByteArray gets a tag with name as []int8
+func (t *Compound) GetByteArray(name string) ([]int8, error) {
     tag, ok := t.Get(name)
     if !ok {
         return nil, errors.New("couldn't find tag " + name)
@@ -1966,7 +1966,7 @@ type IntArray struct {
 }
 
 // ID returns tag id
-func (t *IntArray) ID() byte {
+func (t *IntArray) ID() int8 {
     return IDTagIntArray
 }
 
@@ -2023,9 +2023,9 @@ func (t *IntArray) ToBool() (bool, error) {
     return len(t.Value) > 0, nil
 }
 
-// ToByte returns value as byte
-func (t *IntArray) ToByte() (byte, error) {
-    return 0, errors.New("couldn't cast to byte")
+// ToByte returns value as int8
+func (t *IntArray) ToByte() (int8, error) {
+    return 0, errors.New("couldn't cast to int8")
 }
 
 // ToRune returns value as rune
@@ -2093,9 +2093,9 @@ func (t *IntArray) ToFloat64() (float64, error) {
     return 0, errors.New("couldn't cast to float64")
 }
 
-// ToByteArray returns value as []byte
-func (t *IntArray) ToByteArray() ([]byte, error) {
-    return nil, errors.New("couldn't cast to []byte")
+// ToByteArray returns value as []int8
+func (t *IntArray) ToByteArray() ([]int8, error) {
+    return nil, errors.New("couldn't cast to []int8")
 }
 
 // ToString returns value as string
@@ -2134,7 +2134,7 @@ type LongArray struct {
 }
 
 // ID returns tag id
-func (t *LongArray) ID() byte {
+func (t *LongArray) ID() int8 {
     return IDTagLongArray
 }
 
@@ -2191,9 +2191,9 @@ func (t *LongArray) ToBool() (bool, error) {
     return len(t.Value) > 0, nil
 }
 
-// ToByte returns value as byte
-func (t *LongArray) ToByte() (byte, error) {
-    return 0, errors.New("couldn't cast to byte")
+// ToByte returns value as int8
+func (t *LongArray) ToByte() (int8, error) {
+    return 0, errors.New("couldn't cast to int8")
 }
 
 // ToRune returns value as rune
@@ -2261,9 +2261,9 @@ func (t *LongArray) ToFloat64() (float64, error) {
     return 0, errors.New("couldn't cast to float64")
 }
 
-// ToByteArray returns value as []byte
-func (t *LongArray) ToByteArray() ([]byte, error) {
-    return nil, errors.New("couldn't cast to []byte")
+// ToByteArray returns value as []int8
+func (t *LongArray) ToByteArray() ([]int8, error) {
+    return nil, errors.New("couldn't cast to []int8")
 }
 
 // ToString returns value as string
@@ -2287,4 +2287,22 @@ func (t *LongArray) ToIntArray() ([]int32, error) {
 // ToLongArray returns value as []int64
 func (t *LongArray) ToLongArray() ([]int64, error) {
     return t.Value, nil
+}
+
+// Helper functions
+
+func byteArray2Int8Array(array []byte) []int8 {
+    out := make([]int8, len(array))
+    for i, v := range array {
+        out[i] = int8(v)
+    }
+    return out
+}
+
+func int8Array2ByteArray(array []int8) []byte {
+    out := make([]byte, len(array))
+    for i, v := range array {
+        out[i] = byte(v)
+    }
+    return out
 }
